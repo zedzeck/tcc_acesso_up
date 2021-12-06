@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title> Inclusão </title>
+  <style>
+
+      .h11{
+      font-size: 20px;
+      font-family:"Segoe UI", Arial, sans-serif;
+      color: #363636;
+       }
+    .div1{
+          padding-left: 30px;
+            padding-right: 30px;
+        }
+        .h12{
+          font-family:"Segoe UI", Arial, sans-serif;
+    text-align: center;
+    color: #363636;
+
+}
+  </style>
+</head>
+<body style="background-color:#dad8d8;">
+  <div>
+    <h1 class="h12">
+  CADASTRO DE USUÁRIOS NO BANCO DE DADOS E GERAÇÃO DE QR CODE
+</h1>
+  </div>
+<br>
+<h1 class="h11" align="center">  Digite o nome do usuário que poderá ter acesso ao ambiente:</h1> 
+<form class="div1">
+  <div align="center">
+    <input type="text" pattern="[^' ']+" id="namebox" autocomplete="OFF" />
+    <input type="reset" value="INSERIR" id="insert"> </input>
+</form>
+<br>
+<div align="center">
+  <br>
+  <img src="" alt="" id="img">
+</div>
+
+ 
+	<script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-database.js"></script> 
+
+	<script id="MainScript">
+		
+	var firebaseConfig = {
+    apiKey: "AIzaSyA34aRu4W04-3Cw00e_kXm-X8j76dXn2-s",
+    authDomain: "dados-cb930.firebaseapp.com",
+    databaseURL: "https://dados-cb930-default-rtdb.firebaseio.com",
+    projectId: "dados-cb930",
+    storageBucket: "dados-cb930.appspot.com",
+    messagingSenderId: "842047163881",
+    appId: "1:842047163881:web:b59eff74a017edd6d7cf78",
+    measurementId: "G-9X2L421SKN"
+  };
+  firebase.initializeApp(firebaseConfig);
+  var teste;
+  var nameV;
+  function Ready(){
+	nameV = document.getElementById('namebox').value;
+ 	teste = document.getElementById('namebox').value;
+    teste =  teste.replace(/ /g,""); 
+  }
+
+  document.getElementById('insert').onclick = function(){
+  	Ready();
+  	firebase.database().ref('cadastro/usuario').push({
+  		nome: teste
+  	});
+    var x = teste;
+    var url = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${x}`;
+
+    var img = document.getElementById("img");
+
+    img.src = url;
+    console.log(url);
+  }
+	</script>
+
+</body>
+</html>

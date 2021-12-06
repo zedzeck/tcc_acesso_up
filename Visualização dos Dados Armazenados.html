@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title> Registros de Entrada No Local</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<style>
+		.table-responsive{
+			
+			padding-left: 10px;
+			padding-right: 10px;
+		}
+
+		.div1{
+        	padding-left: 30px;
+            padding-right: 30px;
+        }
+       .h11{
+			font-size: 20px;
+			color: #363636;
+			 	 font-family:"Segoe UI", Arial, sans-serif;
+       }
+       .h12{
+       	 font-family:"Segoe UI", Arial, sans-serif;
+       }
+       td{
+    	text-align: center;
+    	vertical-align: middle;
+		}
+        th{
+ 		 text-align: center;
+}
+
+	</style>
+</head>
+<body style="background-color:#dad8d8;">
+	
+	<div>
+		<b>
+		<h1 align="center" class="h12"> HISTÓRICO DE ACESSO AO AMBIENTE</h1>
+		<br>
+		<br>
+	</b>
+		<h1 class="h11" align="center">  Pesquise o usuário por nome, data e hora de entrada e acesso:</h1>	
+
+        <div class="div1">
+        			<input class="form-control" id="myInput" type="text" 						placeholder="Procurar..">
+        </div> 
+		</div>
+	</div>
+	<br>
+<div class="table-responsive mt-3">
+	
+	
+	<table class="table table-dark text-white">
+		<thead >
+			<th >Nome</th>
+			<th >Data e Hora</th>
+			<th>Temp</th>
+			<th>Acesso</th>
+
+		</thead>
+		<tbody id="tbody1">
+
+		</tbody>
+	</table>
+
+	</div>
+	<script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-database.js"></script> 
+
+	<script id="MainScript">
+		  var firebaseConfig = {
+    apiKey: "AIzaSyA34aRu4W04-3Cw00e_kXm-X8j76dXn2-s",
+    authDomain: "dados-cb930.firebaseapp.com",
+    databaseURL: "https://dados-cb930-default-rtdb.firebaseio.com",
+    projectId: "dados-cb930",
+    storageBucket: "dados-cb930.appspot.com",
+    messagingSenderId: "842047163881",
+    appId: "1:842047163881:web:b59eff74a017edd6d7cf78",
+    measurementId: "G-9X2L421SKN"
+  };
+  firebase.initializeApp(firebaseConfig);
+  	function SelectAllData(){
+  		firebase.database().ref('dados').once('value',function(AllRecords){
+  			AllRecords.forEach(
+  			function(CurrentRecord){
+  				var name = CurrentRecord.val().nome;
+  				var datah = CurrentRecord.val().data;
+  				var tempe = CurrentRecord.val().temp;
+  				var acessoa = CurrentRecord.val().acesso;
+  				AddItemsToTable(name,datah,tempe,acessoa);
+  			}
+  			);
+  		});
+  	}
+  	window.onload = SelectAllData;
+  	var stdNo = 0;
+  	function AddItemsToTable(name,datah,tempe,acessoa){
+  		var tbody = document.getElementById('tbody1');
+  		var trow = document.createElement('tr');
+  		var td1 = document.createElement('td');
+  		var td2 = document.createElement('td');
+  		var td3 = document.createElement('td');
+  		var td4 = document.createElement('td');
+  		var td5 = document.createElement('td');
+  		td1.innerHTML= ++stdNo;
+  		td2.innerHTML= name;
+  		td3.innerHTML= datah;
+  		td4.innerHTML= tempe;
+  		td5.innerHTML= acessoa;
+  		trow.appendChild(td2); trow.appendChild(td3); trow.appendChild(td4); trow.appendChild(td5);
+  		tbody.appendChild(trow);
+  	}
+
+	</script>
+	<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#tbody1 tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+</body>
+</html>
